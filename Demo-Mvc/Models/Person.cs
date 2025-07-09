@@ -7,14 +7,10 @@ namespace DemoMVC.Models
     public class Person
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string? PersonID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string PersonId { get; set; } = string.Empty;
+
         public string? FullName { get; set; }
         public string? Address { get; set; }
-    public class Employee : Person
-{
-    public string? EmployeeId { get; set; }
-    public int Age { get; set; }
-}
     }
 }
