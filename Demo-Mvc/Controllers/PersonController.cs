@@ -18,7 +18,7 @@ namespace Demo_Mvc.Controllers
         // GET: Person
         public async Task<IActionResult> Index()
         {
-            var model = await _context.Person.ToListAsync();
+            var model = await _context.Persons.ToListAsync();
             return View(model);
         }
 
@@ -43,12 +43,12 @@ namespace Demo_Mvc.Controllers
         }
         public async Task<IActionResult> Edit(string? id)
         {
-            if (id == null || _context.Person == null)
+            if (id == null || _context.Persons == null)
             {
                 return NotFound();
             }
 
-            var person = await _context.Person
+            var person = await _context.Persons
           .FirstOrDefaultAsync(m => m.PersonId == id);
 
             if (person == null)
@@ -94,12 +94,12 @@ namespace Demo_Mvc.Controllers
         // GET: Person/Delete/5
         public async Task<IActionResult> Delete(string? id)
         {
-            if (id == null || _context.Person == null)
+            if (id == null || _context.Persons == null)
             {
                 return NotFound();
             }
 
-            var person = await _context.Person
+            var person = await _context.Persons
                 .FirstOrDefaultAsync(m => m.PersonId == id);
             if (person == null)
             {
@@ -114,10 +114,10 @@ namespace Demo_Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var person = await _context.Person.FindAsync(id);
+            var person = await _context.Persons.FindAsync(id);
             if (person != null)
             {
-                _context.Person.Remove(person);
+                _context.Persons.Remove(person);
                 await _context.SaveChangesAsync();
             }
 
@@ -126,7 +126,7 @@ namespace Demo_Mvc.Controllers
 
         private bool PersonExists(string id)
         {
-        return (_context.Person.Any(e => e.PersonId == id));
+        return (_context.Persons.Any(e => e.PersonId == id));
         }
 
     }

@@ -1,29 +1,10 @@
-using Demo_Mvc.Data;
-using System.Linq;
-
-namespace DemoMVC.Models
+namespace Demo_Mvc.Models
 {
-    public static class AutoGenerateCode
+    public static class AutoGenerateId
     {
-        public static string GeneratePersonId(ApplicationDbContext context)
+        public static string GenerateId()
         {
-            var lastPerson = context.Person
-                .OrderByDescending(p => p.PersonId)
-                .FirstOrDefault();
-
-            string newPersonId = "PS001";
-
-            if (lastPerson != null)
-            {
-                string numberPart = lastPerson.PersonId.Substring(2);
-                if (int.TryParse(numberPart, out int number))
-                {
-                    number += 1;
-                    newPersonId = "PS" + number.ToString("D3");
-                }
-            }
-
-            return newPersonId;
+            return Guid.NewGuid().ToString();
         }
     }
 }
