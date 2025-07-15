@@ -33,8 +33,6 @@ namespace Demo_Mvc.Models.Process
                 }
                 //add the column name to the list to count the duplicates
                 columnNames.Add(columnName);
-                //count the duplicate column names and make them unique to avoid the exception
-                //A column named 'Name' already belongs to this DataTable
                 int occurrences = columnNames.Count(x => x.Equals(columnName));
                 if (occurrences > 1)
                 {
