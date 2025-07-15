@@ -2,6 +2,7 @@ using Demo_Mvc.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DemoMVC.Models;
+using Demo_Mvc.Models.Process;
 namespace Demo_Mvc.Controllers
 
 {
@@ -9,18 +10,45 @@ namespace Demo_Mvc.Controllers
    } public class PersonController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+    private ExcelProcess _excelProcess = new ExcelProcess();
         public PersonController(ApplicationDbContext context)
         {
             _context = context;
         }
-
-        // GET: Person
-        public async Task<IActionResult> Index()
+    public async Task<IActionResult> Upload()
+    {
+        return View();
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Upload(IFormFile file)
+    {
+        if (file != null)
         {
-            var model = await _context.Persons.ToListAsync();
-            return View(model);
+            string fileExtension = Path.GetExtension(file.FileName);
+            if (fileExtension != ".xls" && fileExtension != ".xlsx")
+            {
+                ModelState.AddModelError("", "Please choose excel file to upload!");
+            }
+            else
+            {
+                var filename = DateTime.Now.ToShortTimeString() + fileExtension;
+                var filePath = Path.Combine(Directory.GetCurrentDirectory() + "/Uploads/Excels", filename);
+                var fileLocation = new FileInfo(filePath).ToString();
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
         }
+        return View();
+    }
+
+        public async Task<IActionResult> Index()
+    {
+        var model = await _context.Persons.ToListAsync();
+        return View(model);
+    }
 
         // GET: Person/Create
         public IActionResult Create()
@@ -108,8 +136,6 @@ namespace Demo_Mvc.Controllers
 
             return View(person);
         }
-
-        // POST: Person/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

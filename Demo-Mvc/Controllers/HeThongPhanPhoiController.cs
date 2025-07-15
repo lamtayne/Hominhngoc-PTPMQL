@@ -43,15 +43,11 @@ namespace Demo_Mvc.Controllers
             return View(heThongPhanPhoi);
         }
 
-        // GET: HeThongPhanPhoi/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: HeThongPhanPhoi/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MaHTPP,TenHTPP")] HeThongPhanPhoi heThongPhanPhoi)
